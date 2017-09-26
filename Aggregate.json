@@ -4,7 +4,8 @@ db.wands.aggregate([
   {"$group":{"_id":"$maker"}}
   
 ]);
-
+//Write an aggregate that groups wands by their damage.magic,
+//Add an accumulator with a wand_count field to count the number of wands per damage.magic score.
 db.wands.aggregate([
   { "$group":{ 
                "_id":"$damage.magic",
@@ -13,3 +14,46 @@ db.wands.aggregate([
   }
    
 ]);
+
+//Write an aggregate that groups our wands by the maker field.
+//Add an accumulator with the total_cost field that sums the price for each wand per maker.
+db.wands.aggregate([
+  {
+     "$group":{
+          "_id":"$maker",
+           "total_cost":{"$sum":"$price"}
+     }
+  }
+  
+]);
+
+//Write an aggregate to group wands by their level_required.
+//Add an accumulator with a field named price_average to get the average price for the wands per level.
+
+db.wands.aggregate([
+  
+  {
+    "$group":{
+      "_id":"$level_required",
+      "price_average":{"$avg":"$price"}
+    }
+  }
+])
+
+//Write an aggregate to group wands by their maker
+//Add an accumulator with the field total_wands to sum the number of wands each maker has.
+//Now add an accumulator with the field max_magic that finds that greatest damage.magic per maker
+//Lastly, add one more accumulator with the field lowest_price that finds the lowest wand price per maker
+
+db.wands.aggregate([
+  {
+    "$group":{
+        "_id":"$maker",
+        "total_wands":{"$sum":1},
+        "max_magic":{"$max":"$damage.magic"},
+        "lowest_price":{"$min":"$price"}
+    }
+  }
+])
+
+
