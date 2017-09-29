@@ -1,9 +1,12 @@
-//used to group distinct  eliment
+//Write an aggregate to group wands by their maker so that we'll get a list of unique makers.
 
 db.wands.aggregate([
   {"$group":{"_id":"$maker"}}
   
 ]);
+
+SELECT maker FROM wands GROUP BY maker;
+
 //Write an aggregate that groups wands by their damage.magic,
 //Add an accumulator with a wand_count field to count the number of wands per damage.magic score.
 db.wands.aggregate([
@@ -14,6 +17,8 @@ db.wands.aggregate([
   }
    
 ]);
+
+SELECT COUNT(damage.magic) AS wand_count GROUP BY damage.magic;
 
 //Write an aggregate that groups our wands by the maker field.
 //Add an accumulator with the total_cost field that sums the price for each wand per maker.
@@ -27,6 +32,8 @@ db.wands.aggregate([
   
 ]);
 
+SELECT SUM(price) AS total_cost FROM wands GROUP BY maker ;
+
 //Write an aggregate to group wands by their level_required.
 //Add an accumulator with a field named price_average to get the average price for the wands per level.
 
@@ -39,6 +46,9 @@ db.wands.aggregate([
     }
   }
 ])
+
+SELECT AVG(price) AS   price_average FROM wands GROUP BY level_required ; 
+
 
 //Write an aggregate to group wands by their maker
 //Add an accumulator with the field total_wands to sum the number of wands each maker has.
@@ -56,6 +66,8 @@ db.wands.aggregate([
   }
 ])
 
+SELECT COUNT(maker) AS total_wands,MAX(damage.magic) AS max_magic,  MIN(price) AS lowest_price FROM wands GROUP BY maker ; 
+
 //Write an aggregate that will only match wands that have "Air Bolt" in their list of powers
 //Add another aggregate stage to group the data by their maker.
 //Add an accumulator with a field named lowest_level that finds the lowest level_required per maker
@@ -69,6 +81,8 @@ db.wands.aggregate([
              }
   }
 ])
+
+SELECT MIN(level_required) FROM wands  WHERE powers="Air Bolt" GROUP BY maker ;
 
 //Write an aggregate to match wands that have a price that is less than 50
 //Add the aggregate stage to group the wands by their 
@@ -85,18 +99,9 @@ db.wands.aggregate([
    
   },
   {"$match": {"average_magic": {"$gt": 40}}}
-])
+]);
 
-
-db.wands.aggregate([
-  {  "$match":{"price":{"$lt":50}}},
-  {"$group":{
-            "_id":"$maker",
-            "average_magic":{"$avg":"$damage.magic"}
-           }
-  },
-  {"$match": {"average_magic": {"$gt": 40}}}    
-])
+SELECT AVG(damage.magic) AS average_magic FROM wands  WHERE price<50 AND average_magic>40  GROUP BY maker ;
 
 //Write an aggregate that finds wands that have a level_required that's less than or equal to 5
 //Add the aggregate stage to group the wands by their maker.
@@ -118,3 +123,5 @@ db.wands.aggregate([
   
  
 ])
+
+SELECT  maker,damage.magic, MAX(damage.magic) AS max_damage FROM wands WHERE level_required<=5  GROUP BY maker ORDER BY max_damage DESC LIMIT 4 ;
