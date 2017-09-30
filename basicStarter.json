@@ -1,0 +1,44 @@
+                                   Basic look
+                                   
+                   db.wands.insert({
+                                        "name": "Dream Bender",
+                                        "creator": "Foxmond",
+                                        "level_required":10,
+                                        "price":34.9,
+                                        "powers":["Fire","Love"],
+                                        "damage":{
+                                                "magic":4,
+                                                "melee":2
+                                        }
+                                    })
+
+//The wandRecorder database has wands already loaded inside of a collection named wands. Write a command to find all of the documents in that collection.
+
+db.wands.find();
+
+SELECT * FROM wands ;
+
+//We're proud of the shiny new wand we've just purchased, so let's add it to the wands collection. Our wand's name is "Dream Bender" and its creator is "Foxmond".
+//Write a command to insert our wand into the wands collection. 
+
+db.wands.insert({
+             "name":"Dream Bender",
+             "creator":"Foxmond"
+             });
+             
+INSERT INTO wands(name,creator) VALUES ("Dream Bender","Foxmond");
+
+
+//Our friend Merlin was asking about a wand by the name of "Storm Seeker". Let's check the wands collection to see if we can find information about it.
+
+db.wands.find({"name":"Storm Seeker"});
+
+SELECT * FROM wands WHERE name="Storm Seeker" ;
+
+//Write a query that finds all wands where the creator is "Moonsap".
+
+db.wands.find({"creator":"Moonsap"});
+
+SELECT * FROM wands WHERE creator="Moonsap" ;
+
+
