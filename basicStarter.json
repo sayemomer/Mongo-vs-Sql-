@@ -25,10 +25,93 @@ db.wands.find({"name":"Storm Seeker"});
 
 SELECT * FROM wands WHERE name="Storm Seeker" ;
 
+//Write a query that will find all wands, but this time project only the name field. Don't worry about the _id showing up in the results for now.
+
+db.wands.find({}, {"name": true})
+
+SELECT name FROM wands;
+
+
+
 //Write a query that finds all wands where the creator is "Moonsap".
 
 db.wands.find({"creator":"Moonsap"});
 
 SELECT * FROM wands WHERE creator="Moonsap" ;
+
+//First, find all the wands where the maker is "Moonsap".
+//Now, update the query to only retrieve wands that have a level_required of 5
+
+db.wands.find(
+  {"maker":"Moonsap",
+   "level_required":5},
+)
+
+SELECT * FROM wands WHERE maker="Moonsap" AND level_required=5 ;
+
+
+//Write a query for wands that have a level_required that is less than or equal to 5
+db.wands.find(
+  {"level_required":{"$lte":5}}
+)
+
+SELECT * FROM wands WHERE level_required <= 5 ;
+
+//Write a query for wands that do not include "Love Burst" in their powers.
+
+db.wands.find(
+  {"powers":{"$not":"Love Burst"}}
+)
+
+SELECT * FROM wands WHERE power!="Love Burst";
+
+//Let's find out which wands have a "damage.melee" that is greater than or equal to 30 and less than or equal to 40.
+
+db.wands.find(
+  {"damage.melee":{"$gte":30,"$lte":40}}
+)
+
+//Write a query that will find any wands that contain lengths that are greater than or equal to 2.5 but less than 3. Remember, arrays can be tricky!
+
+db.wands.find(
+  {"lengths":{"$elemMatch":{"$gte":2.5,"$lt":3} }}
+)
+
+//Merlin's first requirement is the wand must not be made by "Foxmond".
+//Next, Merlin's level is 75 so we'll want to add a query for a level_required that is less than or equal to 75.
+//Merlin doesn't want to spend more than 50 gems. Add another query that makes sure the price is less than 50
+//Lastly, make sure the wand is 3 to 4 banana lengths. Remember, arrays can be tricky!
+
+db.wands.find(
+ {
+   "maker":{"$ne":"Foxmond"},
+   "level_required":{"$lte":75},
+   "price":{"$lt":50},
+   "lengths":{"$elemMatch":{"$lte":4,"$gte":3 }}
+ }
+  
+)
+
+//Write a query to find wands with a level_required of 2, and then use the appropriate cursor method to count the total.
+
+db.wands.find({"level_required":2}).count();
+
+SELECT COUNT(level_required) FROM wands WHERE level_required=2;
+
+//Finish the code below so that only 8 wands are returned by the cursor for each page:
+
+db.wands.find({}).skip(0).limit(8);
+
+SELECT * FROM wands LIMIT 8;
+
+//First, let's write a query to match all wands.
+//Next, add a cursor method to sort the wands in descending order by their price field.
+//Lastly, add another cursor method to limit the results to only 3 documents. 
+
+db.wands.find().sort({"price":-1}).limit(3);
+
+SELECT * FROM wands ORDER BY price DESC LIMIT 3 ;
+
+
 
 
