@@ -1,6 +1,17 @@
+1.INSERT
+
+//We're proud of the shiny new wand we've just purchased, so let's add it to the wands collection. Our wand's name is "Dream Bender" and its creator is "Foxmond".
+//Write a command to insert our wand into the wands collection. 
+
+db.wands.insert({
+             "name":"Dream Bender",
+             "creator":"Foxmond"
+             });
+             
+INSERT INTO wands(name,creator) VALUES ("Dream Bender","Foxmond");
 
 
-1.DELETE 
+2.DELETE 
 
 //Write the command to remove the wand with the name of "Doom Bringer" from our wands collection
 
@@ -15,7 +26,7 @@ db.wands.remove({"powers":"Death"});
 DELETE FROM wands WHERE powers="Death"  ;
 
 
-2.UPDATE
+3.UPDATE
 
 //Write the command to update the wand with a name of "Devotion Shift" and set the price to 5.99.
 
