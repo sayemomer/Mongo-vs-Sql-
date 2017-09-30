@@ -99,7 +99,7 @@ db.wands.aggregate([
    
   },
   {"$match": {"average_magic": {"$gt": 40}}}
-]);
+])
 
 SELECT AVG(damage.magic) AS average_magic FROM wands  WHERE price<50 AND average_magic>40  GROUP BY maker ;
 
