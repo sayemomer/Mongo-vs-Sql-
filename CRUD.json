@@ -109,7 +109,7 @@ db.wands.update(
 db.wands.update(
   {},
   {"$mul":{"damage.melee":10}},
-  {multi: true}
+  {"multi": true}
 )
 
 
