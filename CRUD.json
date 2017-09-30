@@ -1,0 +1,113 @@
+
+
+1.DELETE 
+
+//Write the command to remove the wand with the name of "Doom Bringer" from our wands collection
+
+db.wands.remove({"name":"Doom Bringer"});
+
+DELETE FROM wands WHERE name="Doom Bringer" ;
+
+//When we removed the "Doom Bringer" wand, we noticed that it had a power of "Death", and we don't want any wands like that in our database. To be safe, let's remove any wands containing that in their powers.
+
+db.wands.remove({"powers":"Death"});
+
+DELETE FROM wands WHERE powers="Death"  ;
+
+
+2.UPDATE
+
+//Write the command to update the wand with a name of "Devotion Shift" and set the price to 5.99.
+
+db.wands.update(
+  {"name":"Devotion Shift"},
+  {"$set":{"price":5.99}}
+ );
+ 
+ UPDATE wands SET price=5.99 WHERE name="Devotion Shift" ; 
+ 
+ //First, let's add the query parameter to find all wands that include "Fire" in their powers 
+ //Great! Now add an update parameter to increment the level_required by 2.
+ //Now that we have a working update command, change it so that the update will apply to all documents that match the query.
+ 
+ db.wands.update(
+  {"powers":"Fire"},
+  {"$inc":{"level_required": 2}},
+  {"multi":true}
+)
+
+UPDATE wands SET level_required=( SELECT level_required FROM wands WHERE powers="Fire")+2 WHERE powers="Fire";  
+
+//First, let's add the query parameter to find a wand with the name of "Dream Bender";
+//Great! Now add the update parameter to increment the count field by 1
+//Add the option that will create a new document if none match the query or update an existing document.
+
+db.logs.update(
+  {"name":"Dream Bender"},
+  {"$inc":{"count":1}},
+  {"upsert":true }
+  
+)
+
+***********************************************
+//Add the update parameter that will remove the smell field from all documents.
+
+db.wands.update(
+  {},
+  {"$unset":{"smell":""}},
+  {"multi": true}
+)
+
+ALTER TABLE wands  DROP COLUMN smell ;
+
+
+//Add the update parameter that will rename the creator field to "maker" for all documents
+
+db.wands.update(
+  {},
+  {"$rename":{"creator":"maker"}},
+  {"multi": true}
+)
+
+ALTER TABLE wands DROP COLUMN creator;
+
+ALTER TABLE wands ADD COLUMN creator;
+
+//For the wand above, let's add the update parameter to set the value of "Fire" to "Fire Deflection" in the powers array.
+
+db.wands.update(
+  {"name": "Dream Bender"},
+  {"$set":{"powers.0":"Fire Deflection"}}
+)
+
+## for all position 
+db.wands.update(
+  {"name": "Dream Bender"},
+  {"$set":{"powers.$":"Fire Deflection"}}
+)
+
+//Add the update parameter that will add "Spell Casting" to the end of the powers array for this wand.
+
+db.wands.update(
+  {"name": "Dream Bender"},
+  {"$push":{"powers":"Spell Casting"}}
+)
+
+##multipliction on array 
+
+db.wands.update(
+  {},
+  {"$mul":{"damage.melee":10}},
+  {multi: true}
+)
+
+
+
+
+
+
+
+ 
+ 
+
+
